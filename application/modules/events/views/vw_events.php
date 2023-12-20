@@ -9,17 +9,18 @@
                 <div class="card-body">
                     <button class="btn btn-info mb-3" type="button" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Tambah data</button>
 
-                    <table id="client_table" class="table table-striped table-bordered">
+                    <table id="events_table" class="table table-striped table-bordered">
                         <thead class="text-center">
                             <tr>
                                 <th>No</th>
-                                <th>Nama</th>
-                                <th>Email</th>
+                                <th>Nama Event</th>
+                                <th>Client</th>
+                                <th>Kode</th>
                                 <th>Status</th>
-                                <th>No. Telp</th>
-                                <th>PIC Client</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
+                                <th>Responden</th>
+                                <th>Event Start</th>
+                                <th>Event End</th>
+                                <th>PIC Event</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -31,7 +32,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+<div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md static" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -42,38 +43,33 @@
             </div>
             <div class="modal-body">
                 <form action="" method="POST" id="form_tambah">
-
-                    <h5><b>Client data</b></h5>
-                    <hr>
+                    <div class="form-group">
+                        <label for="client_id">Client</label>
+                        <select class="form-control js-example-basic-single" id="client_id" name="client_id" style="width: 100%; height:100px">
+                            <?php foreach ($clients as $client) : ?>
+                                <option value="<?= $client['id'] ?>"><?= $client['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="name">Nama</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" required>
+                        <label for="min_responden">Minimal Responden</label>
+                        <input type="number" class="form-control" id="min_responden" name="min_responden" required>
                     </div>
                     <div class="form-group">
-                        <label for="no_telp">No.Telp</label>
-                        <input type="number" class="form-control" id="no_telp" name="no_telp" required>
+                        <label for="event_start">Event Mulai</label>
+                        <input type="datetime-local" class="form-control" id="event_start" name="event_start" required>
                     </div>
                     <div class="form-group">
-                        <label for="pic_client">PIC</label>
-                        <input type="text" class="form-control" id="pic_client" name="pic_client" required>
-                    </div>
-                    <h5 class="mt-4"><b>Akun data</b></h5>
-                    <hr>
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <label for="event_end">Event Selesai</label>
+                        <input type="datetime-local" class="form-control" id="event_end" name="event_end" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="re_password">Re-Password</label>
-                        <input type="password" class="form-control" id="re_password" name="re_password" required>
+                        <label for="pic_event">PIC Event</label>
+                        <input type="text" class="form-control" id="pic_event" name="pic_event" required>
                     </div>
             </div>
             <div class="modal-footer">
@@ -87,7 +83,7 @@
 
 <script>
     $(document).ready(function() {
-        var table = $("#client_table");
+        var table = $("#events_table");
         grid_brand = table.DataTable({
             // scrollX: true,
             // scrollCollapse: true,
@@ -97,7 +93,7 @@
             processing: true,
             ajax: {
                 type: "GET",
-                url: '<?= base_url() ?>clients/load',
+                url: '<?= base_url() ?>Events/load',
                 data: function(d) {
                     no = 0;
                 },
@@ -116,45 +112,60 @@
                     render: function(data, type, full, meta) {
                         return full.name;
                     },
+                    className: "text-center",
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.email;
+                        return full.client_name;
                     },
+                    className: "text-center",
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return full.code;
+                    },
+                    className: "text-center",
                 },
                 {
                     render: function(data, type, full, meta) {
                         return full.is_active;
                     },
+                    className: "text-center",
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.no_telp;
+                        return full.min_responden;
                     },
+                    className: "text-center",
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.pic_client;
+                        return full.event_start;
                     },
+                    className: "text-center",
                 },
 
                 {
                     render: function(data, type, full, meta) {
-                        return full.created_at;
+                        return full.event_end;
                     },
-                    width: "10%",
+                    className: "text-center",
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.updated_at;
+                        return full.pic_event;
                     },
-                    width: "10%",
+                    className: "text-center",
                 },
                 {
                     render: function(data, type, full, meta) {
                         return `<div class="container">
+                                    <div class="row">
+                                    <div class="col">
                                     <button title="Edit" onclick="edit('${full.id_brand}','${full.brand}')" type="button" class="btn btn-success"><i class="fa fa-edit"></i></button>
                                     <button onclick="hapus('${full.id_brand}')" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                    </div>
                                 </div>`;
                     },
                     width: "20%",
@@ -169,7 +180,7 @@
         e.preventDefault();
         let formData = new FormData($('#form_tambah')[0])
         $.ajax({
-            url: '<?= base_url() ?>Clients/tambah',
+            url: '<?= base_url() ?>Events/tambah',
             method: 'POST',
             dataType: 'JSON',
             processData: false,

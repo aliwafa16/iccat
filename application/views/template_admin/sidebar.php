@@ -6,8 +6,8 @@
         </div>
     </a>
     <hr class="sidebar-divider my-0">
-    <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url() ?>Dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -39,7 +39,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="ui-colors.html">
+        <a class="nav-link" href="<?= base_url('Events') ?>">
             <i class="fas fa-fw fa-palette"></i>
             <span>Events</span>
         </a>
