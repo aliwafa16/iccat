@@ -30,10 +30,12 @@ class Survey extends MY_Controller
 
                         // Get item pertanyaan
                         $itemPernyataan = $this->db->get('perilaku')->result_array();
-
+                        $groupedData = array_chunk($itemPernyataan, 30);
+                        $max_group = 30;
                         $data = [
                             'title' => '',
-                            'item_pernyataan' => $itemPernyataan
+                            'item_pernyataan' => $groupedData,
+                            'max_loop' => count($itemPernyataan) / $max_group
                         ];
 
                         $this->load->view('vw_survey', $data);
