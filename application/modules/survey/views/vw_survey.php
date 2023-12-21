@@ -80,7 +80,7 @@
                             </li>
                         <?php endfor; ?>
                     </ul>
-                    <form action="">
+                    <form action="" id="form-survey">
                         <div class="tab-content">
                             <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                                 <div class="mt-3">
@@ -101,8 +101,8 @@
                                         <input type="date" class="form-control" id="born_date" name="born_date" required>
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <label for="born_date">Jabatan saat ini</label>
-                                        <input type="text" class="form-control" id="born_date" name="born_date" required>
+                                        <label for="position">Jabatan saat ini</label>
+                                        <input type="text" class="form-control" id="position" name="position" required>
                                     </div>
                                 </div>
                             </div>
@@ -136,16 +136,16 @@
                                             <?php foreach ($pernyataan as $item) : ?>
                                                 <tr>
                                                     <td style="padding: 6px; text-align:left"><?= $item['perilaku'] ?></td>
-                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="0"></td>
-                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="1"></td>
-                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="2"></td>
-                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="3"></td>
-                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="4"></td>
-                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="5"></td>
-                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" value="4"></td>
-                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" value="3"></td>
-                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" value="2"></td>
-                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" value="1"></td>
+                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="0" required></td>
+                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="1" required></td>
+                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="2" required></td>
+                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="3" required></td>
+                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="4" required></td>
+                                                    <td class="align-middle"><input type="radio" name="frekuensi_<?= $item['id'] ?>" id="frekuensi_<?= $item['id'] ?>" value="5" required></td>
+                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" style="accent-color: red;" value="4" required></td>
+                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" style="accent-color: red;" value="3" required></td>
+                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" style="accent-color: red;" value="2" required></td>
+                                                    <td class="align-middle"><input type="radio" name="kepentingan_<?= $item['id'] ?>" id="kepentingan_<?= $item['id'] ?>" style="accent-color: red;" value="1" required></td>
                                                 </tr>
                                             <?php endforeach ?>
                                         </tbody>
@@ -182,6 +182,52 @@
     <script src="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
+            // Fungsi untuk mengisi radio button secara acak
+            function isiRadioSecaraAcak() {
+                // Mendapatkan semua elemen radio button dalam dokumen
+                var radioButtons = $('input[type="radio"]');
+
+                // Memilih indeks radio button secara acak
+                var indeksAcak = Math.floor(Math.random() * radioButtons.length);
+
+                // Mengaktifkan radio button yang dipilih secara acak
+                radioButtons.eq(indeksAcak).prop('checked', true);
+            }
+
+            // Memanggil fungsi saat dokumen selesai dimuat
+            isiRadioSecaraAcak();
+
+            var formInputs = $('#form-survey').find(':input:not(:radio)');
+
+            // Loop melalui setiap elemen formulir
+            formInputs.each(function() {
+                var inputName = $(this).attr('name');
+
+                // Periksa apakah ada nilai di local storage untuk kunci yang sesuai
+                var storedValue = localStorage.getItem(inputName);
+
+                // Jika ada nilai di local storage, atur nilai tersebut ke dalam elemen formulir
+                if (storedValue !== null) {
+                    $(this).val(storedValue);
+                }
+            });
+
+
+            var radioButtons = $('#form-survey').find(':radio');
+
+            // Loop through each radio button
+            radioButtons.each(function() {
+                var radioName = $(this).attr('name');
+
+                // Check if there is a value in local storage for the corresponding key
+                var storedValueRadio = localStorage.getItem(radioName);
+
+                // If a value is found in local storage, check the radio button with that value
+                if (storedValueRadio !== null && $(this).val() === storedValueRadio) {
+                    $(this).prop('checked', true);
+                }
+            });
+
             $(function() {
                 // SmartWizard initialize
                 $('#smartwizard').smartWizard({
@@ -206,6 +252,23 @@
                     }
                 });
 
+                $("#smartwizard").on("leaveStep", function(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
+                    // return confirm("Do you want to leave the step " + currentStepIndex + "?");
+
+
+                    if (currentStepIndex == 0) {
+                        var formData1 = $('#form-survey').find(':input:not(:radio)').map(function() {
+                            localStorage.setItem($(this).attr('name'), $(this).val());
+                        }).get();
+                    } else {
+                        var formData = $('#form-survey').find(':radio:checked').map(function() {
+                            localStorage.setItem($(this).attr('name'), $(this).val());
+                        }).get();
+                    }
+
+
+                    // console.log(formData)
+                });
 
             });
         })
