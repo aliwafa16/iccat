@@ -383,6 +383,10 @@
             // });
         }
 
+        // for (var i = 0; i < 360; i++) {
+        //     $('[name=frekuensi_' + i + ']').eq(Math.floor(Math.random() * 6)).attr('checked', true);
+        // }
+
         $('.js-data-example-ajax').select2({
             ajax: {
                 url: '<?= base_url('Survey/getKompetensi') ?>',
