@@ -12,9 +12,21 @@
     <!-- Jquery -->
     <script src="<?= base_url('assets/') ?>vendor/jquery/jquery.min.js"></script>
 
+    <!-- Select 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Wizard -->
     <link href="<?= base_url('assets/wizards') ?>/dist/css/smart_wizard_dots.css" rel="stylesheet" type="text/css" />
+
+    <!-- Alert -->
+    <link rel="stylesheet" href="<?= base_url('assets/alerts/style.css') ?>">
+
+    <!-- Fontawesome -->
+    <link href="<?= base_url('assets/') ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
+
+
     <style>
         td {
             position: relative;
@@ -42,7 +54,7 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="tahap-1">
         <div class="row mt-5">
             <div class="col-md-3 col-sm-12">
                 <div class="card">
@@ -79,6 +91,11 @@
                                 </a>
                             </li>
                         <?php endfor; ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#step-14">
+                                <div class="num">14</div>
+                            </a>
+                        </li>
                     </ul>
                     <form action="" id="form-survey">
                         <div class="tab-content">
@@ -153,6 +170,62 @@
                                 </div>
                                 <?php $step++; ?>
                             <?php endforeach ?>
+                            <div id="step-14" class="tab-pane" role="tabpanel" aria-labelledby="step-14">
+                                <div class="row">
+                                    <div class="list-group col-md-3">
+                                        <?php foreach ($item_kompetensi as $kompetensi) : ?>
+                                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-1"><?= $kompetensi['kompetensi'] ?></h5>
+                                                    <small><i class="fa fa-plus"></i></small>
+                                                </div>
+                                                <p class="mb-1"></p>
+                                                <small><?= $kompetensi['deskripsi'] ?></small>
+                                            </a>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <table class="table table-hover table-bordered">
+                                            <thead style="text-align: center;">
+                                                <tr>
+                                                    <th scope="col" style="width: 50%;vertical-align:middle" rowspan="2">Ranking</th>
+                                                    <th scope="col" style="width: 50%;vertical-align:middle" rowspan="2">Kompetensi</th>
+                                                    <th scope="col" style="width: 50%;vertical-align:middle" colspan="4">Tingkat Kepentingan</th>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="col" style="vertical-align:middle">Mutlak</th>
+                                                    <th scope="col" style="vertical-align:middle">Penting</th>
+                                                    <th scope="col" style="vertical-align:middle">Berguna</th>
+                                                    <th scope="col" style="vertical-align:middle">Tidak Perlu</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $i = 1 ?>
+                                                <?php foreach ($item_kompetensi as $kompetensi) : ?>
+                                                    <tr>
+                                                        <td>
+                                                            <h5><?= $i ?></h5>
+                                                        </td>
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <select class="js-example-data-array js-data-example-ajax form-control" style="width: 100%;" name="kompetensi_<?= $kompetensi['id'] ?>" onchange="changeSelected(this)">
+                                                                        <option value="">---Pilih kompetensi---</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <!-- <button class="btn btn-danger" type="button"><i class="fa fa-times"></i></button> -->
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <?php $i++ ?>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
 
@@ -168,7 +241,7 @@
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
 
     <!-- Option 2: Separate Popper and Bootstrap JS -->
@@ -180,22 +253,17 @@
 
     <!-- Wizards -->
     <script src="https://cdn.jsdelivr.net/npm/smartwizard@6/dist/js/jquery.smartWizard.min.js" type="text/javascript"></script>
+
+    <!-- Alerts -->
+    <script src="<?= base_url('assets/alerts/cute-alert.js') ?>"></script>
+
+    <!-- Sortable -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script> -->
+
     <script>
         $(document).ready(function() {
-            // Fungsi untuk mengisi radio button secara acak
-            function isiRadioSecaraAcak() {
-                // Mendapatkan semua elemen radio button dalam dokumen
-                var radioButtons = $('input[type="radio"]');
 
-                // Memilih indeks radio button secara acak
-                var indeksAcak = Math.floor(Math.random() * radioButtons.length);
-
-                // Mengaktifkan radio button yang dipilih secara acak
-                radioButtons.eq(indeksAcak).prop('checked', true);
-            }
-
-            // Memanggil fungsi saat dokumen selesai dimuat
-            isiRadioSecaraAcak();
 
             var formInputs = $('#form-survey').find(':input:not(:radio)');
 
@@ -228,6 +296,16 @@
                 }
             });
 
+            // Sortable// Without options:
+            // $('#my-list').sortable();
+            // var order = $('#my-list').sortable('toArray');
+
+            // function toArray() {
+            //     console.log('okaaa')
+            // }
+
+
+
             $(function() {
                 // SmartWizard initialize
                 $('#smartwizard').smartWizard({
@@ -237,7 +315,7 @@
                         previous: 'Sebelumnya'
                     },
                     toolbar: {
-                        extraHtml: `<button class="btn btn-success" id="finish-btn" onclick="onFinish()">Finish</button>`
+                        extraHtml: `<button class="btn btn-success" type="button" id="finish-btn" onclick="onFinish()">Finish</button>`
                     },
 
                 });
@@ -249,6 +327,10 @@
                     // Show the finish button only on the last step
                     if (stepPosition === 'last') {
                         $('#finish-btn').show();
+                    }
+
+                    if (stepNumber == 13) {
+                        console.log('okkkkkkkkkkk')
                     }
                 });
 
@@ -265,13 +347,114 @@
                             localStorage.setItem($(this).attr('name'), $(this).val());
                         }).get();
                     }
-
-
-                    // console.log(formData)
                 });
 
             });
+
+            // Get Data dropdown
+            // data_dropdown = [];
+            // $.ajax({
+            //     url: '<?= base_url() ?>Survey/getKompetensi',
+            //     dataType: 'JSON',
+            //     method: 'POST',
+            //     success: function(results) {
+            //         results.forEach(element => {
+            //             data_dropdown.push({
+            //                 id: element.id,
+            //                 text: element.kompetensi
+            //             })
+            //         });
+
+
+            //         $(".js-example-data-array").select2({
+            //             data: data_dropdown
+            //         })
+
+            //         console.log(data_dropdown)
+            //     }
+            // })
+
         })
+
+        function changeSelected(e) {
+            // console.log(e.value)
+            // data_dropdown = data_dropdown.filter(function(obj) {
+            //     return obj.id !== e.value;
+            // });
+        }
+
+        $('.js-data-example-ajax').select2({
+            ajax: {
+                url: '<?= base_url('Survey/getKompetensi') ?>',
+                dataType: 'json',
+                // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                processResults: function(data) {
+                    return {
+                        results: data.map(function(item) {
+                            return {
+                                id: item.id,
+                                text: item.text
+                            };
+                        })
+                    };
+                },
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+                    return query;
+                }
+            }
+        })
+
+        $("select").on("select2:select", function(evt) {
+            var element = evt.params.data.element;
+            var $element = $(element);
+            $element.detach();
+            $(this).append($element);
+            $(this).trigger("change");
+        });
+
+        function onFinish() {
+            cuteAlert({
+                type: "question",
+                title: 'Yakin melanjutkan ?',
+                message: 'Data yang sudah disimpan tidak bisa diubah',
+                confirmText: 'Lanjutkan',
+                cancelText: 'Batal'
+            }).then((e) => {
+                if (e == "confirm") {
+                    $('#tahap-1').hide();
+                } else {
+                    console.log('gak confirm')
+                }
+            })
+            // alertify.confirm("Yakin ingin menghapus data ?",
+            // function() {
+            // $.ajax({
+            // url: '<?= base_url() ?>Category/hapus',
+            // method: 'POST',
+            // dataType: 'JSON',
+            // data: {
+            // id
+            // },
+            // success: function(results) {
+            // if (results.code != 200) {
+            // errors(results.message)
+            // } else {
+            // success(results.message)
+            // }
+            // }
+            // })
+            // },
+            // ).set('labels', {
+            // ok: 'Hapus',
+            // cancel: 'Batal'
+            // }).set({
+            // title: "Hapus data"
+            // });
+        }
     </script>
 </body>
 

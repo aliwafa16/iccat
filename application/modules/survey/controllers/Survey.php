@@ -31,10 +31,15 @@ class Survey extends MY_Controller
                         // Get item pertanyaan
                         $itemPernyataan = $this->db->get('perilaku')->result_array();
                         $groupedData = array_chunk($itemPernyataan, 30);
+
+
+                        // Get kompetensi
+                        $itemKompetensi  = $this->db->get('kompetensi')->result_array();
                         $max_group = 30;
                         $data = [
                             'title' => '',
                             'item_pernyataan' => $groupedData,
+                            'item_kompetensi' => $itemKompetensi,
                             'max_loop' => count($itemPernyataan) / $max_group
                         ];
 
@@ -49,5 +54,22 @@ class Survey extends MY_Controller
                 }
             }
         }
+    }
+
+    public function getKompetensi()
+    {
+        $results = [];
+        $this->db->select('kompetensi.id, kompetensi.kompetensi as text');
+        $this->db->like('kompetensi', $this->input->get('search'));
+        $response = $this->db->get('kompetensi')->result_array();
+
+        foreach ($response as $key) {
+            $row = [];
+            $row['id'] = intval($key['id']);
+            $row['text'] = $key['text'];
+
+            $results[] = $row;
+        }
+        echo json_encode($results);
     }
 }
