@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Clients extends MY_Controller
+class Transactions extends MY_Controller
 {
     public function __construct()
     {
@@ -14,14 +14,14 @@ class Clients extends MY_Controller
     public function index()
     {
         $data = [
-            'title' => 'Client'
+            'title' => 'Transaction'
         ];
-        $this->admin_template->view('clients/vw_clients', $data);
+        $this->admin_template->view('transactions/vw_transactions', $data);
     }
 
     public function load()
     {
-        $results = $this->db->get('clients')->result_array();
+        $results = $this->db->get('trn_survey')->result_array();
         echo json_encode($results);
     }
 
@@ -66,7 +66,7 @@ class Clients extends MY_Controller
                 ];
 
                 $this->db->trans_start();
-                $this->db->insert('clients', $dataClient);
+                $this->db->insert('transactions', $dataClient);
                 $this->db->trans_complete();
 
                 if ($this->db->trans_status() === FALSE) {
@@ -83,6 +83,4 @@ class Clients extends MY_Controller
 
         echo json_encode($response);
     }
-
-    
 }

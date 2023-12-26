@@ -7,18 +7,19 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <!-- <button class="btn btn-info mb-3" type="button" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Tambah data</button> -->
-                    <table id="dashboard_table" class="table table-striped table-bordered">
+                    <button class="btn btn-info mb-3" type="button" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Tambah data</button>
+
+                    <table id="client_table" class="table table-striped table-bordered">
                         <thead class="text-center">
                             <tr>
                                 <th>No</th>
                                 <th>Nama</th>
-                                <th>Client</th>
                                 <th>Email</th>
-                                <th>Status</th>
-                                <th>Jumlah Responden</th>
-                                <th>Event Mulai</th>
-                                <th>Event Selesai</th>
+
+                                <th>No. Telp</th>
+                                <th>PIC Client</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -86,7 +87,7 @@
 
 <script>
     $(document).ready(function() {
-        var table = $("#dashboard_table");
+        var table = $("#client_table");
         grid_brand = table.DataTable({
             // scrollX: true,
             // scrollCollapse: true,
@@ -96,7 +97,7 @@
             processing: true,
             ajax: {
                 type: "GET",
-                url: '<?= base_url() ?>dashboard/load',
+                url: '<?= base_url() ?>clients/load',
                 data: function(d) {
                     no = 0;
                 },
@@ -118,12 +119,7 @@
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.client_name;
-                    },
-                },
-                {
-                    render: function(data, type, full, meta) {
-                        return full.client_email;
+                        return full.email;
                     },
                 },
                 {
@@ -133,23 +129,32 @@
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.min_responden;
+                        return full.no_telp;
                     },
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.event_start;
+                        return full.pic_client;
                     },
+                },
+
+                {
+                    render: function(data, type, full, meta) {
+                        return full.created_at;
+                    },
+                    width: "10%",
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.event_end;
+                        return full.updated_at;
                     },
+                    width: "10%",
                 },
                 {
                     render: function(data, type, full, meta) {
                         return `<div class="container">
-                                    <a href="${full.link}" title="Edit" type="button" target="__blank" class="btn btn-success"><i class="fa fa-paper-plane"></i> Mulai survey</button>
+                                    <button title="Edit" onclick="edit('${full.id_brand}','${full.brand}')" type="button" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                    <button onclick="hapus('${full.id_brand}')" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                 </div>`;
                     },
                     width: "20%",
