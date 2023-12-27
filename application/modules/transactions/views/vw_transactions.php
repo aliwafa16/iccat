@@ -7,17 +7,18 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <button class="btn btn-info mb-3" type="button" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Tambah data</button>
+                    <!-- <button class="btn btn-info mb-3" type="button" data-toggle="modal" data-target="#addModal"><i class="fa fa-plus"></i> Tambah data</button> -->
 
                     <table id="client_table" class="table table-striped table-bordered">
                         <thead class="text-center">
                             <tr>
                                 <th>No</th>
+                                <th>Client</th>
+                                <th>Event</th>
                                 <th>Nama</th>
                                 <th>Email</th>
-
                                 <th>No. Telp</th>
-                                <th>PIC Client</th>
+                                <th>Posisi</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Aksi</th>
@@ -97,12 +98,13 @@
             processing: true,
             ajax: {
                 type: "GET",
-                url: '<?= base_url() ?>clients/load',
+                url: '<?= base_url() ?>transactions/load',
                 data: function(d) {
                     no = 0;
                 },
                 dataSrc: "",
             },
+
             columns: [{
                     render: function(data, type, full, meta) {
                         no += 1;
@@ -114,7 +116,17 @@
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.name;
+                        return full.client_name;
+                    },
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return full.event_name;
+                    },
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return full.responden_name;
                     },
                 },
                 {
@@ -124,20 +136,14 @@
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.is_active;
-                    },
-                },
-                {
-                    render: function(data, type, full, meta) {
                         return full.no_telp;
                     },
                 },
                 {
                     render: function(data, type, full, meta) {
-                        return full.pic_client;
+                        return full.work_level;
                     },
                 },
-
                 {
                     render: function(data, type, full, meta) {
                         return full.created_at;
@@ -153,7 +159,7 @@
                 {
                     render: function(data, type, full, meta) {
                         return `<div class="container">
-                                    <button title="Edit" onclick="edit('${full.id_brand}','${full.brand}')" type="button" class="btn btn-success"><i class="fa fa-edit"></i></button>
+                                    <a href="<?= base_url('Transactions/responden/') ?>${full.id}" target="__blank" title="Edit" type="button" class="btn btn-info"><i class="fa fa-list"></i></a>
                                     <button onclick="hapus('${full.id_brand}')" type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                 </div>`;
                     },

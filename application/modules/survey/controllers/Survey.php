@@ -193,13 +193,9 @@ class Survey extends MY_Controller
         }
 
 
-        $data_survey = [
-            'distribusi_jawaban' => $distribusi_jawaban,
-            'jawaban_perkategori' => $distribusi_perkategori,
-            'distribusi_kompetensi' => $distribusi_rank
-        ];
+        $data_survey = array("distribusi_jawaban" => $distribusi_jawaban, "jawaban_perkategori" => $distribusi_perkategori, "distribusi_kompetensi" => $distribusi_rank);
+        $convert_datasurvey = json_encode($data_survey, JSON_NUMERIC_CHECK | JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_HEX_APOS);
         // Selesai hitung jawaban
-
         $codeSurvey = $this->input->get('unique_code');
         $dataEvent = $this->db->get_where('events', ['code' => $codeSurvey])->row_array();
 
@@ -225,7 +221,7 @@ class Survey extends MY_Controller
                             'born_date' => $this->input->post('born_date'),
                             'work_level' => $this->input->post('position'),
                             'gender' => $this->input->post('gender'),
-                            'survey' => json_encode($data_survey, JSON_NUMERIC_CHECK | JSON_PARTIAL_OUTPUT_ON_ERROR | JSON_HEX_APOS),
+                            'survey' => $convert_datasurvey
                         ];
 
 

@@ -21,8 +21,62 @@ class Transactions extends MY_Controller
 
     public function load()
     {
-        $results = $this->db->get('trn_survey')->result_array();
+        $this->db->select('trn_survey.*, clients.name as client_name, events.name as event_name');
+        $this->db->from('trn_survey');
+        $this->db->join('clients', 'trn_survey.client_id=clients.id');
+        $this->db->join('events', 'trn_survey.event_id=events.id');
+        $this->db->order_by('trn_survey.created_at', 'DESC');
+        $results = $this->db->get()->result_array();
         echo json_encode($results);
+    }
+
+
+    public function responden($responden_id)
+    {
+        $this->db->select('trn_survey.*, clients.name as client_name, events.name as event_name');
+        $this->db->from('trn_survey');
+        $this->db->join('clients', 'trn_survey.client_id=clients.id');
+        $this->db->join('events', 'trn_survey.event_id=events.id');
+        $this->db->where('trn_survey.id', $responden_id);
+        $dataTransaksi = $this->db->get()->row_array();
+
+
+        $dataSurvey = json_decode($dataTransaksi['survey'], true);
+
+        // Get data pertanyaan;
+        $getItemPertanyaan = $this->db->get('perilaku')->result_array();
+        $getItemKompetensi = $this->db->get('kompetensi')->result_array();
+
+        $distribusi_jawaban_final = [];
+        // foreach ($dataSurvey['distribusi_jawaban'] as $data) {
+        // $row = [];
+        // foreach ($dataSurvey[0]['distribusi_jawaban'] as $key => $value) {
+        //     $dataSurvey[0]['distribusi_jawaban'][$key]['pertanyaan'] = $getItemPertanyaan[$key]['perilaku'];
+
+        //     // var_dump($data['distribusi_jawaban']);
+        //     // }
+        // }
+
+
+
+        // var_dump($dataSurvey[0]['jawaban_perkategori']);
+
+        foreach ($dataSurvey as $data) {
+            $row = [];
+            foreach ($data['jawaban_perkategori'] as $key => $value) {
+            }
+            foreach ($data['distribusi_jawaban'] as $key => $value) {
+                $value['pertanyaan'] = $getItemPertanyaan[$key]['perilaku'];
+                $value['total'] = ($value['kepentingan'] + $value['frekuensi']) / 2;
+                $distribusi_jawaban_final[] = $value;
+            }
+        }
+
+        $data = [
+            'title' => 'Detail Responden',
+            'data_transaksi' => $dataTransaksi
+        ];
+        $this->admin_template->view('transactions/vw_responden', $data);
     }
 
     public function tambah()
