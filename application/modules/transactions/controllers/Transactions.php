@@ -48,23 +48,7 @@ class Transactions extends MY_Controller
         $getItemKompetensi = $this->db->get('kompetensi')->result_array();
 
         $distribusi_jawaban_final = [];
-        // foreach ($dataSurvey['distribusi_jawaban'] as $data) {
-        // $row = [];
-        // foreach ($dataSurvey[0]['distribusi_jawaban'] as $key => $value) {
-        //     $dataSurvey[0]['distribusi_jawaban'][$key]['pertanyaan'] = $getItemPertanyaan[$key]['perilaku'];
-
-        //     // var_dump($data['distribusi_jawaban']);
-        //     // }
-        // }
-
-
-
-        // var_dump($dataSurvey[0]['jawaban_perkategori']);
-
         foreach ($dataSurvey as $data) {
-            $row = [];
-            foreach ($data['jawaban_perkategori'] as $key => $value) {
-            }
             foreach ($data['distribusi_jawaban'] as $key => $value) {
                 $value['pertanyaan'] = $getItemPertanyaan[$key]['perilaku'];
                 $value['total'] = ($value['kepentingan'] + $value['frekuensi']) / 2;
@@ -74,7 +58,10 @@ class Transactions extends MY_Controller
 
         $data = [
             'title' => 'Detail Responden',
-            'data_transaksi' => $dataTransaksi
+            'data_transaksi' => $dataTransaksi,
+            'data_kompetensi' => $dataSurvey[0]['jawaban_perkategori'],
+            'data_perilaku' => $distribusi_jawaban_final,
+            'data_ranking' => $dataSurvey[0]['distribusi_kompetensi']
         ];
         $this->admin_template->view('transactions/vw_responden', $data);
     }

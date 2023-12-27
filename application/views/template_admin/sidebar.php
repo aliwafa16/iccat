@@ -50,6 +50,12 @@
             <span>Transaksi</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('Reports') ?>">
+            <i class="fas fa-fw fa-palette"></i>
+            <span>Reports</span>
+        </a>
+    </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading">
         Master data
