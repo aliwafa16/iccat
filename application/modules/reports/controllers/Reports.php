@@ -29,9 +29,23 @@ class Reports extends MY_Controller
 
     public function show_reports()
     {
-        $data = [];
-        $response = $this->load->view('reports/vw_show_reports', $data, TRUE);
 
+        // Get Event dan Client;
+
+        $this->db->select('events.*,clients.name as client_name');
+        $this->db->from('events');
+        $this->db->join('clients', 'events.client_id=clients.id');
+        $this->db->where('events.id', $this->input->post('event_id'));
+        $dataEvents =  $this->db->get()->row_array();
+
+
+        // Count jumlah pengisi
+        $jmlResponden = $this->db->get_where('trn_survey', ['event_id' => $this->input->post('event_id')])->result_array();
+        $data = [
+            'events' => $dataEvents,
+            'jumlah_responden' => count($jmlResponden)
+        ];
+        $response = $this->load->view('reports/vw_show_reports', $data, TRUE);
         echo json_encode($response);
     }
 }

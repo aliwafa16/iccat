@@ -58,7 +58,7 @@
             background-color: #f1f1f1;
         }
     </style>
-    <title>Hello, world!</title>
+    <title>Survey</title>
 </head>
 
 <body>
@@ -115,7 +115,7 @@
             </div>
             <div class="col-md-12">
                 <div id="smartwizard">
-                    <ul class="nav">
+                    <ul class="nav" style="visibility:hidden">
                         <li class="nav-item">
                             <a class="nav-link" href="#step-1">
                                 <div class="num">1</div>
@@ -136,6 +136,11 @@
                     </ul>
                     <form action="" id="form-survey" method="POST" enctype="multipart/form-data">
                         <div class="tab-content">
+                            <!-- Include optional progressbar HTML -->
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
                             <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                                 <div class="mt-3">
                                     <div class="form-group col-md-3">
@@ -278,12 +283,6 @@
                             </div>
                         </div>
                     </form>
-
-                    <!-- Include optional progressbar HTML -->
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -348,6 +347,11 @@
                 }
             });
 
+            const initialAriaValueNow = $('.progress-bar').attr('aria-valuenow');
+            console.log('Initial aria-valuenow', initialAriaValueNow);
+
+            $('.progress-bar').text(initialAriaValueNow + '%')
+
 
 
             $(function() {
@@ -384,9 +388,7 @@
                 });
 
                 $("#smartwizard").on("leaveStep", function(e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
-                    // return confirm("Do you want to leave the step " + currentStepIndex + "?");
-
-
+                    // Update the progress bar width and aria-valuenow attribute
                     if (currentStepIndex == 0) {
                         var formData1 = $('#form-survey').find(':input:not(:radio)').map(function() {
                             localStorage.setItem($(this).attr('name'), $(this).val());
@@ -396,6 +398,17 @@
                             localStorage.setItem($(this).attr('name'), $(this).val());
                         }).get();
                     }
+
+                    let totalSteps = $('#smartwizard ul.nav > li').length;
+                    let progressValue = (currentStepIndex + 1) / (totalSteps - 1) * 100;
+
+                    // Update the progress bar width and aria-valuenow attribute
+                    $('.progress-bar').css('width', progressValue + '%').attr('aria-valuenow', progressValue);
+                    const originalNumber = parseFloat($('.progress-bar').attr('aria-valuenow'));
+                    $('.progress-bar').text(originalNumber.toFixed(2) + '%');
+
+
+
                 });
 
             });

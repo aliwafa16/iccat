@@ -9,7 +9,7 @@
                 <div class="card-body">
                     <form class="form-inline" id="form-reports">
                         <div class="form-group mx-sm-3 mb-2 col-md-3">
-                            <select class="form-control js-example-basic-single" id="client_id" name="client_id" style="width: 180%; height:100px">
+                            <select class="form-control js-example-basic-single" id="event_id" name="event_id" style="width: 180%; height:100px">
                                 <?php foreach ($events as $event) : ?>
                                     <option value="<?= $event['id'] ?>"><?= $event['name'] ?></option>
                                 <?php endforeach; ?>
