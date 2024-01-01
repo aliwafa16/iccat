@@ -24,13 +24,20 @@
 
     <!-- Fontawesome -->
     <link href="<?= base_url('assets/') ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
+    <link href="<?= base_url('assets/') ?>images/logo2.JPG" rel="icon">
+    <title>ICCA - Survey</title>
 
 
     <style>
         td {
             position: relative;
             text-align: center;
+        }
+
+        table,
+        th,
+        td {
+            border: 2px solid black !important;
         }
 
         input[type="radio"] {
@@ -137,7 +144,7 @@
                     <form action="" id="form-survey" method="POST" enctype="multipart/form-data">
                         <div class="tab-content">
                             <!-- Include optional progressbar HTML -->
-                            <div class="progress">
+                            <div class="progress mb-2">
                                 <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                 </div>
                             </div>
@@ -178,24 +185,24 @@
                                     <table class="table table-hover table-bordered">
                                         <thead style="text-align: center;">
                                             <tr>
-                                                <th scope="col" style="width: 50%;vertical-align:middle" rowspan="3">Kompetensi dan perilaku kunci</th>
-                                                <th scope="col" style="width: 50%;vertical-align:middle" colspan="10">Analisa Kompetensi</th>
+                                                <th scope="col" class="table-secondary" style="width: 50%;vertical-align:middle; font-size:24px" rowspan="3">Kompetensi dan perilaku kunci</th>
+                                                <th scope="col" class="table-secondary" style="width: 50%;vertical-align:middle" colspan="10">Analisa Kompetensi</th>
                                             </tr>
                                             <tr>
-                                                <th scope="col" style="vertical-align:middle" colspan="6">Frekuensi</th>
-                                                <th scope="col" style="vertical-align:middle" colspan="5">Tingkat kepentingan</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle" colspan="6">Frekuensi</th>
+                                                <th scope="col" class="table-primary" style="vertical-align:middle" colspan="5">Tingkat kepentingan</th>
                                             </tr>
                                             <tr>
-                                                <th scope="col" style="vertical-align:middle">Tidak Pernah</th>
-                                                <th scope="col" style="vertical-align:middle">Tahunan</th>
-                                                <th scope="col" style="vertical-align:middle">Bulanan</th>
-                                                <th scope="col" style="vertical-align:middle">Mingguan</th>
-                                                <th scope="col" style="vertical-align:middle">Harian</th>
-                                                <th scope="col" style="vertical-align:middle">Beberapa kali dalam sehari</th>
-                                                <th scope="col" style="vertical-align:middle">Mutlak</th>
-                                                <th scope="col" style="vertical-align:middle">Penting</th>
-                                                <th scope="col" style="vertical-align:middle">Berguna</th>
-                                                <th scope="col" style="vertical-align:middle">Tidak Perlu</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle">Tidak Pernah</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle">Tahunan</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle">Bulanan</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle">Mingguan</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle">Harian</th>
+                                                <th scope="col" class="table-danger" style="vertical-align:middle">Beberapa kali dalam sehari</th>
+                                                <th scope="col" class="table-primary" style="vertical-align:middle">Mutlak</th>
+                                                <th scope="col" class="table-primary" style="vertical-align:middle">Penting</th>
+                                                <th scope="col" class="table-primary" style="vertical-align:middle">Berguna</th>
+                                                <th scope="col" class="table-primary" style="vertical-align:middle">Tidak Perlu</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -239,15 +246,15 @@
                                         <table class="table table-hover table-bordered">
                                             <thead style="text-align: center;">
                                                 <tr>
-                                                    <th scope="col" style="vertical-align:middle" rowspan="2">Ranking</th>
-                                                    <th scope="col" style="vertical-align:middle" rowspan="2">Kompetensi</th>
-                                                    <th scope="col" style="vertical-align:middle" colspan="4">Tingkat Kepentingan</th>
+                                                    <th scope="col" class="table-secondary" style="vertical-align:middle" rowspan="2">Ranking</th>
+                                                    <th scope="col" class="table-secondary" style="vertical-align:middle" rowspan="2">Kompetensi</th>
+                                                    <th scope="col" class="table-secondary" style="vertical-align:middle" colspan="4">Tingkat Kepentingan</th>
                                                 </tr>
                                                 <tr>
-                                                    <th scope="col" style="vertical-align:middle">Mutlak</th>
-                                                    <th scope="col" style="vertical-align:middle">Penting</th>
-                                                    <th scope="col" style="vertical-align:middle">Berguna</th>
-                                                    <th scope="col" style="vertical-align:middle">Tidak Perlu</th>
+                                                    <th scope="col" class="table-primary" style="vertical-align:middle">Mutlak</th>
+                                                    <th scope="col" class="table-primary" style="vertical-align:middle">Penting</th>
+                                                    <th scope="col" class="table-primary" style="vertical-align:middle">Berguna</th>
+                                                    <th scope="col" class="table-primary" style="vertical-align:middle">Tidak Perlu</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

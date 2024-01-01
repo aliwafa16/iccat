@@ -135,6 +135,7 @@ class Survey extends MY_Controller
                 'name' => 'pernyataan_' . $key['id'],
                 'kepentingan' => $kepentingan,
                 'frekuensi' => $frekuensi,
+                'total_value' => (($frekuensi + $kepentingan) / 2),
                 'kompetensi' => $key['kompetensi_id']
             ];
             $distribusi_jawaban[] = $row;
@@ -177,17 +178,19 @@ class Survey extends MY_Controller
         // var_dump($dummyRank);
         foreach ($dummyRank as $key) {
             $row = [];
+            $kepentinganKompetensi = $this->input->post($nameKepentinganKompetensi . '_' . $key['rank']);
             foreach ($itemKompetensi as $kompetensi) {
-
                 if ($key['value_kategori'] == $kompetensi['id']) {
                     $row['rank'] = $key['rank'];
                     $row['name_rank'] = $key['name_rank'];
                     $row['name'] = $kompetensi['kompetensi'];
                     $row['kompetensi_id'] = $key['value_kategori'];
                     $row['value'] = $key['value'];
+                    $row['total_value'] = $key['value'] + $kepentinganKompetensi;
+                    
                 }
             }
-            $kepentinganKompetensi = $this->input->post($nameKepentinganKompetensi . '_' . $key['rank']);
+           
             $row['kepentingan_kompetensi'] = $kepentinganKompetensi;
             $distribusi_rank[] = $row;
         }
@@ -198,7 +201,6 @@ class Survey extends MY_Controller
         // Selesai hitung jawaban
         $codeSurvey = $this->input->get('unique_code');
         $dataEvent = $this->db->get_where('events', ['code' => $codeSurvey])->row_array();
-
 
         $response = [];
         $responden = 0;

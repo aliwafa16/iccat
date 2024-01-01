@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="<?= base_url('assets/') ?>images/logo2.JPG" rel="icon">
+    <title>ICCA - Opps</title>
 </head>
 
 <style>
@@ -404,7 +405,7 @@ DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
         <div class="central-body">
             <img class="image-404" src="http://salehriaz.com/404Page/img/404.svg" width="300px">
             <h1 style="color:white"><?= $message ?></h1>
-            <a href="http://salehriaz.com/404Page/404.html" class="btn-go-home" target="_blank">GO BACK HOME</a>
+            <!-- <a href="<?php ?>" class="btn-go-home" target="_blank">GO BACK HOME</a> -->
         </div>
         <div class="objects">
             <img class="object_rocket" src="http://salehriaz.com/404Page/img/rocket.svg" width="40px">

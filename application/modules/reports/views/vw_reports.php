@@ -15,7 +15,8 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary mb-2">Cari</button>
+                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> Cari</button>
+                        <button type="submit" class="btn btn-success mb-2 ml-2"><i class="fa fa-download"></i> Download</button>
                     </form>
                 </div>
             </div>

@@ -41,87 +41,91 @@ class Transactions extends MY_Controller
         $dataTransaksi = $this->db->get()->row_array();
 
 
-        $dataSurvey = json_decode($dataTransaksi['survey'], true);
+        $dataSurvey[] = json_decode($dataTransaksi['survey'], true);
+
 
         // Get data pertanyaan;
         $getItemPertanyaan = $this->db->get('perilaku')->result_array();
         $getItemKompetensi = $this->db->get('kompetensi')->result_array();
 
-        $distribusi_jawaban_final = [];
-        foreach ($dataSurvey as $data) {
-            foreach ($data['distribusi_jawaban'] as $key => $value) {
-                $value['pertanyaan'] = $getItemPertanyaan[$key]['perilaku'];
-                $value['total'] = ($value['kepentingan'] + $value['frekuensi']) / 2;
-                $distribusi_jawaban_final[] = $value;
+
+        // Proses distribusi jawaban
+        $groupedArrays = array();
+        $indexArray = 0;
+        foreach ($dataSurvey[0]['distribusi_jawaban'] as $array) {
+            $kompetensi = $array['kompetensi'];
+
+            $item = array(
+                'id' => $array['id'],
+                'name' => $array['name'],
+                'pertanyaan' => $getItemPertanyaan[$indexArray]['perilaku'],
+                'kepentingan' => $array['kepentingan'],
+                'frekuensi' => $array['frekuensi'],
+                'total_value' => number_format((float)$array['total_value'], 2, '.', ''),
+                'kompetensi' => $array['kompetensi'],
+            );
+
+            if (!isset($groupedArrays[$kompetensi])) {
+                $groupedArrays[$kompetensi] = array(
+                    'kompetensi' => $kompetensi,
+                    'item_pertanyaan' => array()
+                );
             }
+
+            $groupedArrays[$kompetensi]['item_pertanyaan'][] = $item;
+
+            $indexArray++;
+        }
+        // Sort the "item_pertanyaan" arrays based on the "id" key
+        foreach ($groupedArrays as &$group) {
+            usort($group['item_pertanyaan'], function ($a, $b) {
+                return $b['total_value'] <=> $a['total_value'];
+            });
+        }
+
+        // Convert associative array to indexed array
+        $result = array_values($groupedArrays);
+
+        $distribusi_jawaban = [];
+        foreach ($result as $key => $value) {
+            $value['nama_kompetensi'] = $getItemKompetensi[$key]['kompetensi'];
+            $value['deskripsi'] = $getItemKompetensi[$key]['deskripsi'];
+            $distribusi_jawaban[] = $value;
+        }
+
+        // Endproses
+
+
+        // Proses ranking
+        usort(
+            $dataSurvey[0]['distribusi_kompetensi'],
+            function ($a, $b) {
+                return $b['total_value'] <=> $a['total_value'];
+            }
+        );
+
+
+        // Olahan data akhir ( merge distribusi jawaban dan kompetensi)
+        $data_finals = [];
+        foreach ($dataSurvey[0]['distribusi_kompetensi'] as $key => $value) {
+            foreach ($distribusi_jawaban as $jawaban) {
+                if ($value['kompetensi_id'] == $jawaban['kompetensi']) {
+                    $value['item_pertanyaan'] = $jawaban['item_pertanyaan'];
+                    $value['deskripsi'] = $jawaban['deskripsi'];
+                }
+                    
+            }
+            $data_finals[] = $value;
         }
 
         $data = [
             'title' => 'Detail Responden',
             'data_transaksi' => $dataTransaksi,
             'data_kompetensi' => $dataSurvey[0]['jawaban_perkategori'],
-            'data_perilaku' => $distribusi_jawaban_final,
-            'data_ranking' => $dataSurvey[0]['distribusi_kompetensi']
+            'distribusi_jawaban' => $distribusi_jawaban,
+            'data_ranking' => $dataSurvey[0]['distribusi_kompetensi'],
+            'data_finals' => $data_finals
         ];
         $this->admin_template->view('transactions/vw_responden', $data);
-    }
-
-    public function tambah()
-    {
-        $response = [];
-        // $cekData = $this->db->get_where('tbl_category', ['category' => $this->input->post('category')])->row_array();
-
-        if ($this->input->post('password') == $this->input->post('re_password')) {
-
-            // Insert ketabel user (Buat user)
-            $dataUser = [
-                'username' => $this->input->post('username'),
-                'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                'email' => $this->input->post('email'),
-                'role' => 2,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
-            $this->db->trans_start();
-            $this->db->insert('users', $dataUser);
-            $last_id_user = $this->db->insert_id();
-            $this->db->trans_complete();
-
-            if ($this->db->trans_status() === FALSE) {
-                $response = [
-                    'code' => 403, 'status' => false, 'data' => null, 'message' => 'Gagal tambah data'
-                ];
-            } else {
-
-                // Insert ke tabel client 
-                $dataClient = [
-                    'name' => $this->input->post('name'),
-                    'email' => $this->input->post('email'),
-                    'pic_client' => $this->input->post('pic_client'),
-                    'no_telp' => $this->input->post('no_telp'),
-                    'is_active' => 1,
-                    'user_id' => $last_id_user,
-                    'created_at' => date('Y-m-d H:i:s'),
-                    'updated_at' => date('Y-m-d H:i:s')
-                ];
-
-                $this->db->trans_start();
-                $this->db->insert('transactions', $dataClient);
-                $this->db->trans_complete();
-
-                if ($this->db->trans_status() === FALSE) {
-                    $response = [
-                        'code' => 403, 'status' => false, 'data' => null, 'message' => 'Gagal tambah data'
-                    ];
-                } else {
-                    $response = ['code' => 200, 'status' => true, 'data' => $dataClient, 'message' => 'Berhasil tambah data'];
-                }
-            }
-        } else {
-            $response = ['code' => 403, 'status' => false, 'data' => null, 'message' => 'Password tidak sama'];
-        }
-
-        echo json_encode($response);
     }
 }

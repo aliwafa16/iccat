@@ -6,7 +6,10 @@ class Auth extends MY_Controller
 
     public function index()
     {
-        $this->load->view('vw_auth');
+        $data = [
+            'title' => 'Login'
+        ];
+        $this->load->view('vw_auth', $data);
     }
 
     public function login()
