@@ -6,10 +6,10 @@ class Survey extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        $is_login = $this->session->userdata('is_login');
-        if (!$is_login) {
-            redirect('Auth');
-        }
+        // $is_login = $this->session->userdata('is_login');
+        // if (!$is_login) {
+        //     redirect('Auth');
+        // }
     }
     public function index()
     {
@@ -187,10 +187,9 @@ class Survey extends MY_Controller
                     $row['kompetensi_id'] = $key['value_kategori'];
                     $row['value'] = $key['value'];
                     $row['total_value'] = $key['value'] + $kepentinganKompetensi;
-                    
                 }
             }
-           
+
             $row['kepentingan_kompetensi'] = $kepentinganKompetensi;
             $distribusi_rank[] = $row;
         }

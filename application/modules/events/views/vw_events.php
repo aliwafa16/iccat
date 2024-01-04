@@ -81,6 +81,8 @@
     </div>
 </div>
 
+
+
 <script>
     $(document).ready(function() {
         var table = $("#events_table");

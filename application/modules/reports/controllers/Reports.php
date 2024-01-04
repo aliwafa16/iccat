@@ -162,4 +162,36 @@ class Reports extends MY_Controller
         $response = $this->load->view('reports/vw_show_reports', $data, TRUE);
         echo json_encode($response);
     }
+
+    public function prints_reports_pdf()
+    {
+
+        $dataSurvey =  json_decode($this->input->post('data'), true);
+        $this->db->select('events.*,clients.name as client_name');
+        $this->db->from('events');
+        $this->db->join('clients', 'events.client_id=clients.id');
+        $this->db->where('events.id', json_decode($this->input->post('event'), true));
+        $dataEvents =  $this->db->get()->row_array();
+
+        $dataResponden = $this->db->get_where('trn_survey', ['event_id' => json_decode($this->input->post('event'), true)])->result_array();
+
+        $results_finals = [];
+        foreach ($dataSurvey as $key) {
+            $results_finals[] = $key;
+        }
+
+        $data = [
+            'events' => $dataEvents,
+            'jumlah_responden' => count($dataResponden),
+            'data' => $results_finals
+        ];
+
+
+
+        $this->load->library('pdf');
+
+        $this->pdf->setPaper('A4', 'landscape');
+        $this->pdf->filename = "Report_" . str_replace(' ', '_', $dataEvents['client_name'])  . "_" . str_replace(' ', '_', $dataEvents['name']) . "_" . date('Ymdhis') . ".pdf";
+        $this->pdf->load_view('vw_reports_download', $data);
+    }
 }
