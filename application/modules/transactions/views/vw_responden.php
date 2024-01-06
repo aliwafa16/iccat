@@ -46,7 +46,7 @@
                                 <tbody>
                                     <?php
                                     $i_kompetensi = 1;
-                                    $i_perilaku = 1;
+
                                     ?>
                                     <?php foreach ($distribusi_jawaban as $jawaban) : ?>
                                         <tr>
@@ -56,6 +56,7 @@
                                             <td style="text-align: center;" class="table-info"></td>
                                             <td style="text-align: center;" class="table-info"></td>
                                         </tr>
+                                        <?php $i_perilaku = 1; ?>
                                         <?php foreach ($jawaban['item_pertanyaan'] as $perilaku) : ?>
                                             <tr style="line-height: 10px;">
                                                 <th scope="row"><?= $i_perilaku ?></th>
@@ -109,16 +110,18 @@
                                 </thead>
                                 <tbody>
                                     <?php $i = 1 ?>
+
                                     <?php foreach ($data_finals as $data) : ?>
                                         <tr class="table-info">
-                                            <th scope="row" style="text-align: center;vertical-align:middle" rowspan="9"><?= $i ?></th>
-                                            <td style="vertical-align:middle"> <b><?= $data['name'] ?><p><?= $data['deskripsi'] ?></b></p>
+                                            <th scope="row" style="text-align: center;vertical-align:middle" rowspan="9"></th>
+                                            <td style="vertical-align:middle"> <b><?= $i ?>. <?= $data['name'] ?><p><?= $data['deskripsi'] ?></b></p>
                                             </td>
                                             <td style="vertical-align:middle;text-align:center"><?= $data['total_value'] ?></td>
                                         </tr>
+                                        <?php $i_perilaku = 1 ?>
                                         <?php foreach ($data['item_pertanyaan'] as $perilaku) : ?>
                                             <tr style="line-height: 10px;">
-                                                <td><?= $perilaku['pertanyaan'] ?></td>
+                                                <td><?= $i_perilaku ?>. <?= $perilaku['pertanyaan'] ?></td>
                                                 <td style="vertical-align:middle;text-align:center"><?= $perilaku['total_value'] ?></td>
                                             </tr>
                                             <?php $i_perilaku++ ?>

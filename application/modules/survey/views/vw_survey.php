@@ -25,7 +25,7 @@
     <!-- Fontawesome -->
     <link href="<?= base_url('assets/') ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url('assets/') ?>images/logo2.JPG" rel="icon">
-    <title>ICCA - Survey</title>
+    <title>ICCW - Survey</title>
 
 
     <style>

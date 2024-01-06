@@ -12,7 +12,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col" style="width: 10%; text-align:center">#No/Ranking</th>
+                    <th scope="col" style="width: 10%; text-align:center"><input type="checkbox" class="check-all form-check-input">#No/Ranking</th>
                     <th scope="col" style="text-align: center;">Ranking Kompetensi dan Ranking Perilakunya</th>
                     <th scope="col" style="text-align: center;">Bobot/Nilai</th>
                 </tr>
@@ -21,8 +21,8 @@
                 <?php $i = 1 ?>
                 <?php foreach ($data as $data) : ?>
                     <tr class="table-info">
-                        <th scope="row" style="text-align: center;vertical-align:middle" rowspan="9"><input class="form-check-input parent-check check_kompetensi_<?= $data['kompetensi_id'] ?>" data-no="<?= $i ?>" data-kompetensi="<?= $data['name'] ?>" data-deskripsi="<?= $data['deskripsi'] ?>" type="checkbox" value="<?= $data['hasil_bagi_responden'] ?>" id="kompetensi_<?= $data['kompetensi_id'] ?>" name="kompetensi_<?= $data['kompetensi_id'] ?>"><?= $i ?></th>
-                        <td style="vertical-align:middle"><b><?= $data['name'] ?><p><?= $data['deskripsi'] ?></b></p>
+                        <th scope="row" style="text-align: center;vertical-align:middle" rowspan="9"><input class="form-check-input parent-check check_kompetensi_<?= $data['kompetensi_id'] ?>" data-no="<?= $i ?>" data-kompetensi="<?= $data['name'] ?>" data-deskripsi="<?= $data['deskripsi'] ?>" type="checkbox" value="<?= $data['hasil_bagi_responden'] ?>" id="kompetensi_<?= $data['kompetensi_id'] ?>" name="kompetensi_<?= $data['kompetensi_id'] ?>"></th>
+                        <td style="vertical-align:middle"><b><?= $i ?>. <?= $data['name'] ?><p><?= $data['deskripsi'] ?></b></p>
                         </td>
                         <td style="vertical-align:middle;text-align:center"><?= $data['hasil_bagi_responden'] ?></td>
                     </tr>

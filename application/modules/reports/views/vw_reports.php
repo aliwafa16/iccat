@@ -43,7 +43,6 @@
     })
 
     $('#btn_download').on('click', function() {
-        console.log('ok')
         let data = [];
         $('input[name*="kompetensi"]:checked').each(function() {
             let row = {
@@ -54,15 +53,27 @@
                 perilaku: []
             }
             let kompetensi_id = $(this).data('no');
-            let class_child = "child-check-" + kompetensi_id;
+            let class_child = ".child-check-" + kompetensi_id;
 
-            $('input[class*="' + class_child + '"]:checked').each(function() {
-                row.perilaku.push({
-                    name: this.name,
-                    value: this.value,
-                    perilaku: $(this).data('perilaku')
-                })
-            })
+            var checkboxes = $(class_child);
+
+            checkboxes.each(function(index, checkbox) {
+                if ($(checkbox).prop('checked')) {
+                    row.perilaku.push({
+                        name: $(checkbox).attr('name'),
+                        value: $(checkbox).val(),
+                        perilaku: $(checkbox).data('perilaku')
+                    });
+                }
+            });
+
+            // $('input[name]:checked').each(function() {
+            //     row.perilaku.push({
+            //         name: this.name,
+            //         value: this.value,
+            //         perilaku: $(this).data('perilaku')
+            //     })
+            // })
 
             data.push(row)
         });
