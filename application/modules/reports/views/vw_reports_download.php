@@ -11704,29 +11704,41 @@
                 color: inherit;
                 border-color: #e3e6f0
             }
+
+            body {
+                margin: 0px !important;
+                padding: 0px !important;
+            }
         }
     </style>
 
 </head>
 
 <body>
-    <div class="row mt-2">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="text-center"><?= $events['client_name'] ?></h4>
-                    <hr>
-                    <h6 class="text-center"><?= $events['name'] ?> | <?= date($events['event_start']) ?> - <?= date($events['event_end']) ?> | Responden : <?= $jumlah_responden ?> / <?= $events['min_responden'] ?> </h6>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-3 offset-9 text-center">
+            <img src="<?= $logo_clients ?>" alt="" class="img-fluid" width="60px">
+            <img src="<?= $logo_act ?>" alt="" class="img-fluid" width="100px">
         </div>
+    </div>
+    <div class="row" style="margin-top: 0px !important">
+        <div class="col-md-12 text-center">
+            <!-- Text section -->
+            <h4><?= $events['client_name'] ?></h4>
+            <hr>
+            <h6>
+                <?= $events['name'] ?> | <?= date($events['event_start']) ?> - <?= date($events['event_end']) ?> | Responden : <?= $jumlah_responden ?> / <?= $events['min_responden'] ?>
+            </h6>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col" style="width: 1%; text-align:center">No</th>
                         <th scope="col" style="width: 98%; text-align: center;">Ranking Kompetensi dan Ranking Perilakunya</th>
-                        <th scope="col" style="width: 1%; text-align: center;">Bobot/Nilai</th>
+                        <?= ($bobot) ? '<th scope="col" style="width: 1%; text-align: center;">Bobot/Nilai</th>' : '' ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -11737,14 +11749,16 @@
                             <td style="vertical-align:middle;font-size: 16px;"><b><?= $item['kompetensi'] ?></b>
                                 <p style="font-size: 12px;"><?= $item['deskripsi'] ?></p>
                             </td>
-                            <td style="vertical-align:middle; text-align:center;"><?= $item['value'] ?></td>
+                            <?= ($bobot) ? '<td style="vertical-align:middle; text-align:center;">' . $item['value'] . '</td>' : '' ?>
                         </tr>
+                        <?php $i_perilaku = 1; ?>
                         <?php foreach ($item['perilaku'] as $perilaku) : ?>
                             <tr style="line-height: 10px;">
                                 <td></td>
-                                <td style="font-size: 12px;"><?= $perilaku['perilaku'] ?></td>
-                                <td style="font-size:12px;vertical-align:middle; text-align:center;"><?= $perilaku['value'] ?></td>
+                                <td style="font-size: 12px;"><?= $i_perilaku ?>. <?= $perilaku['perilaku'] ?></td>
+                                <?= ($bobot) ? '<td style="font-size:12px;vertical-align:middle; text-align:center;">' . $perilaku['value'] . '</td>' : '' ?>
                             </tr>
+                            <?php $i_perilaku++ ?>
                         <?php endforeach; ?>
                         <?php $i++ ?>
                     <?php endforeach; ?>
@@ -11752,6 +11766,17 @@
             </table>
         </div>
     </div>
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>copyright &copy; <script>
+                        document.write(new Date().getFullYear());
+                    </script> - developed by
+                    <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+                </span>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

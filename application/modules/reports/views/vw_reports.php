@@ -15,8 +15,20 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> Cari</button>
-                        <button type="button" id="btn_download" class="btn btn-success mb-2 ml-2"><i class="fa fa-download"></i> Download</button>
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary mb-2"><i class="fa fa-search"></i> Cari</button>
+                            <div class="btn-group">
+                                <button class="btn btn-success dropdown-toggle mb-2 ml-2" id="btn_master" type="button" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-download"></i> Download
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="button" class="dropdown-item btn_download" href="#" data-bobot="true">Semua</button>
+                                    <button type="button" class="dropdown-item btn_download" href="#" data-bobot="false">Semua ( Tanpa bobot nilai )</button>
+                                    <button type="button" id="btn_kompetensi" class="dropdown-item" href="#">Kompetensi</button>
+                                    <a class="dropdown-item" href="#">Atur ulang</a>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -42,7 +54,12 @@
         })
     })
 
-    $('#btn_download').on('click', function() {
+    $('.btn_download').on('click', function() {
+        var btn = $(this);
+        var bobot = $(this).data('bobot')
+        console.log(bobot)
+        // Disable the button and change its content to show the spinner
+        $('#btn_master').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Downloading...');
         let data = [];
         $('input[name*="kompetensi"]:checked').each(function() {
             let row = {
@@ -67,30 +84,96 @@
                 }
             });
 
-            // $('input[name]:checked').each(function() {
-            //     row.perilaku.push({
-            //         name: this.name,
-            //         value: this.value,
-            //         perilaku: $(this).data('perilaku')
-            //     })
-            // })
-
             data.push(row)
         });
 
         let new_data = JSON.stringify(data)
-
-
         $.ajax({
             url: '<?= base_url('Reports') ?>/prints_reports_pdf',
             data: {
                 data: new_data,
-                event: $('#event_id').val()
+                event: $('#event_id').val(),
+                bobot: bobot
             },
             type: 'POST',
-            dataType: 'JSON',
-            success: function(results) {
-                console.log(results)
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, status, xhr) {
+                $('#btn_master').prop('disabled', false).html('<i class="fa fa-download"></i> Download');
+
+                if (response instanceof Blob) {
+                    var blob = new Blob([response]);
+                    var link = document.createElement('a');
+
+                    // Use the filename from the response
+                    var filename = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
+
+                    let new_filename = filename.replace(/^"|"$/g, '').trim()
+
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = new_filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    console.error("Invalid response format");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+            }
+        })
+    })
+
+    $('#btn_kompetensi').on('click', function() {
+        $('#btn_master').prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Downloading...');
+        let data = [];
+        $('input[name*="kompetensi"]:checked').each(function() {
+            let row = {
+                name: this.name,
+                value: this.value,
+                kompetensi: $(this).data('kompetensi'),
+                deskripsi: $(this).data('deskripsi'),
+            }
+            data.push(row)
+        });
+
+        let new_data = JSON.stringify(data)
+        $.ajax({
+            url: '<?= base_url('Reports') ?>/prints_kompetensi_pdf',
+            data: {
+                data: new_data,
+                event: $('#event_id').val(),
+                bobot: true
+            },
+            type: 'POST',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, status, xhr) {
+                $('#btn_master').prop('disabled', false).html('<i class="fa fa-download"></i> Download');
+
+                if (response instanceof Blob) {
+                    var blob = new Blob([response]);
+                    var link = document.createElement('a');
+
+                    // Use the filename from the response
+                    var filename = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
+
+                    let new_filename = filename.replace(/^"|"$/g, '').trim()
+
+                    link.href = window.URL.createObjectURL(blob);
+                    link.download = new_filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    console.error("Invalid response format");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
             }
         })
     })

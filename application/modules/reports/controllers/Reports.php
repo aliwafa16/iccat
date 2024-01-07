@@ -32,7 +32,7 @@ class Reports extends MY_Controller
 
         // Get Event dan Client;
 
-        $this->db->select('events.*,clients.name as client_name');
+        $this->db->select('events.*,clients.name as client_name, clients.logo as logo');
         $this->db->from('events');
         $this->db->join('clients', 'events.client_id=clients.id');
         $this->db->where('events.id', $this->input->post('event_id'));
@@ -167,7 +167,7 @@ class Reports extends MY_Controller
     {
 
         $dataSurvey =  json_decode($this->input->post('data'), true);
-        $this->db->select('events.*,clients.name as client_name');
+        $this->db->select('events.*,clients.name as client_name, clients.logo as logo');
         $this->db->from('events');
         $this->db->join('clients', 'events.client_id=clients.id');
         $this->db->where('events.id', json_decode($this->input->post('event'), true));
@@ -180,18 +180,93 @@ class Reports extends MY_Controller
             $results_finals[] = $key;
         }
 
+
+        // Logo Client
+        $path = base_url('assets/uploads/logo_clients/') . $dataEvents['logo'];
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $datas = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($datas);
+
+
+        // Logo ACT
+        $path_act = base_url('assets/images/logo2.jpg');
+        $type_act = pathinfo($path_act, PATHINFO_EXTENSION);
+        $data_act = file_get_contents($path_act);
+        $base64_act = 'data:image/' . $type_act . ';base64,' . base64_encode($data_act);
+
         $data = [
             'events' => $dataEvents,
             'jumlah_responden' => count($dataResponden),
-            'data' => $results_finals
+            'data' => $results_finals,
+            'logo_clients' => $base64,
+            'logo_act' => $base64_act,
+            'bobot' => json_decode($this->input->post('bobot'), true),
+            'title' => 'Reports'
         ];
 
-
-
+        $filename = "Report_" . str_replace(' ', '_', $dataEvents['client_name'])  . "_" . str_replace(' ', '_', $dataEvents['name']) . "_" . date('Ymdhis') . ".pdf";
         $this->load->library('pdf');
-
         $this->pdf->setPaper('A4', 'landscape');
-        $this->pdf->filename = "Report_" . str_replace(' ', '_', $dataEvents['client_name'])  . "_" . str_replace(' ', '_', $dataEvents['name']) . "_" . date('Ymdhis') . ".pdf";
-        $this->pdf->load_view('vw_reports_download', $data);
+        $this->pdf->filename = $filename;
+        // $this->pdf->load_view('vw_reports_download', $data);
+
+        // Your existing code to generate PDF content
+        $pdf_content = $this->pdf->load_view('vw_reports_download', $data);
+
+        // Send the PDF content and filename back to the client
+        $response = array('pdf_content' => $pdf_content, 'filename' => $filename);
+        echo json_encode($response);
+    }
+
+    public function prints_kompetensi_pdf()
+    {
+        $dataSurvey =  json_decode($this->input->post('data'), true);
+        $this->db->select('events.*,clients.name as client_name, clients.logo as logo');
+        $this->db->from('events');
+        $this->db->join('clients', 'events.client_id=clients.id');
+        $this->db->where('events.id', json_decode($this->input->post('event'), true));
+        $dataEvents =  $this->db->get()->row_array();
+
+        $dataResponden = $this->db->get_where('trn_survey', ['event_id' => json_decode($this->input->post('event'), true)])->result_array();
+
+        $results_finals = [];
+        foreach ($dataSurvey as $key) {
+            $results_finals[] = $key;
+        }
+
+        // Logo Client
+        $path = base_url('assets/uploads/logo_clients/') . $dataEvents['logo'];
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $datas = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($datas);
+
+
+        // Logo ACT
+        $path_act = base_url('assets/images/logo2.jpg');
+        $type_act = pathinfo($path_act, PATHINFO_EXTENSION);
+        $data_act = file_get_contents($path_act);
+        $base64_act = 'data:image/' . $type_act . ';base64,' . base64_encode($data_act);
+
+        $data = [
+            'events' => $dataEvents,
+            'jumlah_responden' => count($dataResponden),
+            'data' => $results_finals,
+            'logo_clients' => $base64,
+            'logo_act' => $base64_act,
+            'title' => 'Reports'
+        ];
+
+        $filename = "Report_Kompetensi_" . str_replace(' ', '_', $dataEvents['client_name'])  . "_" . str_replace(' ', '_', $dataEvents['name']) . "_" . date('Ymdhis') . ".pdf";
+        $this->load->library('pdf');
+        $this->pdf->setPaper('A4', 'landscape');
+        $this->pdf->filename = $filename;
+        // $this->pdf->load_view('vw_reports_download', $data);
+
+        // Your existing code to generate PDF content
+        $pdf_content = $this->pdf->load_view('vw_kompetensi_download', $data);
+
+        // Send the PDF content and filename back to the client
+        $response = array('pdf_content' => $pdf_content, 'filename' => $filename);
+        echo json_encode($response);
     }
 }

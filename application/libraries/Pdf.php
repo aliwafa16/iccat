@@ -50,7 +50,7 @@ class Pdf extends Dompdf
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isPhpEnabled', true);
-
+        $options->set('isRemoteEnabled', true); 
         $html = $this->ci()->load->view($view, $data, TRUE);
 
         $this->load_html($html);

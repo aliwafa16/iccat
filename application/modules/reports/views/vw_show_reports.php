@@ -2,9 +2,22 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="text-center"><?= $events['client_name'] ?></h4>
-                <hr>
-                <h6 class="text-center"><?= $events['name'] ?> | <?= date($events['event_start']) ?> - <?= date($events['event_end']) ?> | Responden : <?= $jumlah_responden ?> / <?= $events['min_responden'] ?> </h6>
+                <div class="row mt-3">
+                    <div class="col-md-3 offset-md-9 text-center">
+                        <img src="<?= base_url('assets/uploads/logo_clients/') ?><?= $events['logo'] ?>" alt="" class="img-fluid" width="60px">
+                        <img src="<?= base_url('assets/images/') ?>logo2.jpg" alt="" class="img-fluid" width="100px">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <!-- Text section -->
+                        <h4><?= $events['client_name'] ?></h4>
+                        <hr>
+                        <h6>
+                            <?= $events['name'] ?> | <?= date($events['event_start']) ?> - <?= date($events['event_end']) ?> | Responden : <?= $jumlah_responden ?> / <?= $events['min_responden'] ?>
+                        </h6>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

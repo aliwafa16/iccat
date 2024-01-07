@@ -15,6 +15,7 @@
                                 <th>No</th>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Logo</th>
                                 <th>Status</th>
                                 <th>No. Telp</th>
                                 <th>PIC Client</th>
@@ -41,38 +42,45 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" id="form_tambah">
+                <form action="" method="POST" id="form_tambah" enctype="multipart/form-data">
 
                     <h5><b>Client data</b></h5>
                     <hr>
                     <div class="form-group">
-                        <label for="name">Nama</label>
+                        <label for="name">Nama <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="no_telp">No.Telp</label>
+                        <label for="no_telp">No.Telp <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" id="no_telp" name="no_telp" required>
                     </div>
                     <div class="form-group">
-                        <label for="pic_client">PIC</label>
+                        <label for="logo">Logo <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="logo" name="logo" required accept=".png, .jpeg, .jpg">
+                        <small id="emailHelp" class="form-text text-muted">Format : .png, .jpeg, .jpg</small>
+                        <small id="emailHelp" class="form-text text-muted">Max File : 5MB</small>
+                        <small id="emailHelp" class="form-text text-muted">Rekomendasi Resolusi : </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="pic_client">PIC <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="pic_client" name="pic_client" required>
                     </div>
                     <h5 class="mt-4"><b>Akun data</b></h5>
                     <hr>
                     <div class="form-group">
-                        <label for="username">Username</label>
+                        <label for="username">Username <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="username" name="username" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password">Password <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
                     <div class="form-group">
-                        <label for="re_password">Re-Password</label>
+                        <label for="re_password">Re-Password <span class="text-danger">*</span></label>
                         <input type="password" class="form-control" id="re_password" name="re_password" required>
                     </div>
             </div>
@@ -84,6 +92,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     $(document).ready(function() {
@@ -120,6 +129,11 @@
                 {
                     render: function(data, type, full, meta) {
                         return full.email;
+                    },
+                },
+                {
+                    render: function(data, type, full, meta) {
+                        return `<img src="<?= base_url() ?>assets/uploads/logo_clients/${full.logo}" alt="" width="80%">`;
                     },
                 },
                 {

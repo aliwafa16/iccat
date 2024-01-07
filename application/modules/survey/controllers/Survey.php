@@ -30,8 +30,6 @@ class Survey extends MY_Controller
 
                         // Get item pertanyaan
                         $itemPernyataan = $this->db->get('perilaku')->result_array();
-                        shuffle($itemPernyataan);
-
                         $groupedData = array_chunk($itemPernyataan, 30);
 
 
